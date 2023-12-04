@@ -1,9 +1,7 @@
 from moviepy.editor import AudioFileClip
 import whisper
 import os
-import json
 import torchaudio
-import librosa
 import torch
 import argparse
 parent_dir = "./denoised_audio/"
@@ -60,13 +58,16 @@ if __name__ == "__main__":
             # text = lang2token[lang] + text.replace("\n", "") + lang2token[lang]
             text = text + "\n"
             wav_seg = wav[:, int(start_time*sr):int(end_time*sr)]
-            wav_seg_name = f"{character_name}_{code}_{i}.wav"
-            savepth = "./segmented_character_voice/" + character_name + "/" + wav_seg_name
-            speaker_annos.append(savepth + "|" + character_name + "|" + text)
+            wav_savepth = "./segmented_character_voice/" + character_name + f"/{character_name}_{code}_{i}.wav"
+            text_savepath = "./segmented_character_voice/" + character_name + f"/{character_name}_{code}_{i}.txt"
+            speaker_annos.append(wav_savepth + "|" + character_name + "|" + text)
             print(f"Transcribed segment: {speaker_annos[-1]}")
             # trimmed_wav_seg = librosa.effects.trim(wav_seg.squeeze().numpy())
             # trimmed_wav_seg = torch.tensor(trimmed_wav_seg[0]).unsqueeze(0)
-            torchaudio.save(savepth, wav_seg, target_sr, channels_first=True)
+            torchaudio.save(wav_savepth, wav_seg, target_sr, channels_first=True)
+            with open(text_savepath, "w", encoding="utf-8") as output_file:
+                    output_file.write(text)
+                    
     if len(speaker_annos) == 0:
         print("Warning: no long audios & videos found, this IS expected if you have only uploaded short audios")
         print("this IS NOT expected if you have uploaded any long audios, videos or video links. Please check your file structure or make sure your audio/video language is supported.")
