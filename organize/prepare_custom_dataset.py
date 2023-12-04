@@ -3,9 +3,9 @@ import subprocess
 import csv
 import shutil
 
-test_index = -1
+test_index = 136
 
-audio_src_folder = '/Users/apple/Downloads/ducan_voices/processed'
+audio_src_folder = '/Users/apple/Downloads/david_chappelle_processes/'
 destination_folder = '/Users/apple/Desktop/Practicum/self-collect-dataset-2'
 id_0 = 16
 id_1 = 9
